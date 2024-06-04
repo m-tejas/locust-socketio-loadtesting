@@ -12,7 +12,7 @@ class SocketIOUser(HttpUser):
     wait_time = between(1, 5)
     config = dotenv_values('.env')  # Config .env file to access url, user credentials etc
     host = config['url']
-    base_url = config['url']
+    base_url = host
     path = config['path']
     headers = {
         'Authorization': config['BearerToken'],
