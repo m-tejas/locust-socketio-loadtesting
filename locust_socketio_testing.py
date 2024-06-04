@@ -11,6 +11,7 @@ from locust.env import Environment
 class SocketIOUser(HttpUser):
     wait_time = between(1, 5)
     config = dotenv_values('.env')  # Config .env file to access url, user credentials etc
+    host = config['url']
     base_url = config['url']
     path = config['path']
     headers = {
