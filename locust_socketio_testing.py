@@ -10,16 +10,12 @@ from locust.env import Environment
 
 class SocketIOUser(HttpUser):
     wait_time = between(1, 5)
-    config = dotenv_values('.env')  # Config .env file to access url, user credentials etc
+    config = dotenv_values('.env')  # Config .env file to access URL, User Credentials etc
     host = config['url']
     base_url = host
     path = config['path']
-    headers = {
-        'Authorization': config['BearerToken'],
-        'Content-Type': 'application/json'
-    }
 
-    message = { "Test"}   # Enter your message here
+    message = {"Test"}   # Enter your message here
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -28,7 +24,6 @@ class SocketIOUser(HttpUser):
         self.received_response = False
         self.should_reconnect = True  # Flag to control reconnection logic
         self.my_value = None
-        self.response = []
 
     def setup_connection(self):
         @self.sio.event
@@ -44,7 +39,7 @@ class SocketIOUser(HttpUser):
 
         try:
             start_time = time.time()  # Capture start time
-            self.sio.connect(self.base_url, socketio_path=self.path, headers=self.headers)  # Make Connection to server
+            self.sio.connect(self.base_url, socketio_path=self.path)  # Make Connection to server
             events.request.fire(
                 request_type="SocketIO", name="Connect time",
                 response_time=int((time.time() - start_time) * 1000),   # response time in milliseconds
@@ -70,7 +65,7 @@ class SocketIOUser(HttpUser):
                 self.sio.sleep(1)   # Wait for push messages from server
 
             events.request.fire(
-                request_type="SocketIO", name="query time",
+                request_type="SocketIO", name="Query Time",
                 response_time=int((self.end_time - start_time) * 1000),   # response time in milliseconds
                 response_length=len(json.dumps(self.my_value)) )
 
